@@ -203,6 +203,32 @@ defmodule MyApp.Repo.Migrations.CreateUsers do
   end
 end
 
+#### Post Schema and Migration
+
+defmodule MyApp.Post do
+  use Ecto.Schema
+
+  schema "posts" do
+    field :title, :string
+    field :content, :string
+    belongs_to :user, MyApp.User
+    timestamps()
+  end
+end
+
+defmodule MyApp.Repo.Migrations.CreatePosts do
+  use Ecto.Migration
+
+  def change do
+    create table(:posts) do
+      add :title, :string
+      add :content, :text
+      add :user_id, references(:users, on_delete: :nothing)
+      timestamps()
+    end
+  end
+end
+
 #### Associations
 
 defmodule MyApp.Post do
@@ -288,24 +314,16 @@ defmodule MyAppWeb.Endpoint do
   pubsub MyApp.PubSub
 end
 
-### Authentication in Phoenix
+#### UserSocket
 
-#### Using Guardian for JWT Authentication
+defmodule MyAppWeb.UserSocket do
+  use Phoenix.Socket
 
-# Install Guardian package in mix.exs
-defp deps do
-  [
-    {:guardian, "~> 2.0"},
-    {:comeonin, "~> 5.0"},
-    # Other dependencies
-  ]
-end
+  channel "user:lobby", MyAppWeb.UserChannel
 
-# Configure Guardian
-defmodule MyAppWeb.Guardian do
-  use Guardian, otp_app: :my_app
-
-  def subject_for_token(user, _claims) do
-    {:ok, "user:#{user.id}"}
+  def connect(_params, socket, _connect_info) do
+    {:ok, socket}
   end
+
+  def id(_socket), do: nil
 end
