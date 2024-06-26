@@ -327,3 +327,186 @@ defmodule MyAppWeb.UserSocket do
 
   def id(_socket), do: nil
 end
+
+#### Enumerables and Pipelines
+
+# Enumerables (lists, maps, ranges, etc.)
+Enum.map([1, 2, 3], fn x -> x * 2 end)
+Enum.reduce([1, 2, 3], 0, fn x, acc -> x + acc end)
+
+# Pipelines
+[1, 2, 3]
+|> Enum.map(&(&1 * 2))
+|> Enum.reduce(&(&1 + &2))
+
+#### Enum Functions
+
+# all?/1, all?/2
+Enum.all?([1, 2, 3], fn x -> x > 0 end)  # true
+
+# any?/1, any?/2
+Enum.any?([1, 2, 3], fn x -> x > 2 end)  # true
+
+# at/2, at/3
+Enum.at([1, 2, 3], 1)  # 2
+
+# chunk_every/2, chunk_every/3, chunk_every/4
+Enum.chunk_every([1, 2, 3, 4, 5, 6], 2)  # [[1, 2], [3, 4], [5, 6]]
+
+# chunk_by/2
+Enum.chunk_by([1, 2, 3, 4, 5, 6], fn x -> rem(x, 2) end)  # [[1], [2], [3], [4], [5], [6]]
+
+# concat/1, concat/2
+Enum.concat([[1, 2], [3, 4]])  # [1, 2, 3, 4]
+
+# count/1, count/2
+Enum.count([1, 2, 3])  # 3
+
+# dedup/1, dedup_by/2
+Enum.dedup([1, 2, 2, 3])  # [1, 2, 3]
+
+# drop/2
+Enum.drop([1, 2, 3], 2)  # [3]
+
+# drop_while/2
+Enum.drop_while([1, 2, 3], fn x -> x < 3 end)  # [3]
+
+# each/2
+Enum.each([1, 2, 3], fn x -> IO.puts(x) end)
+
+# empty?/1
+Enum.empty?([])  # true
+
+# fetch/2
+Enum.fetch([1, 2, 3], 1)  # {:ok, 2}
+
+# fetch!/2
+Enum.fetch!([1, 2, 3], 1)  # 2
+
+# filter/2
+Enum.filter([1, 2, 3], fn x -> x > 1 end)  # [2, 3]
+
+# find/2, find/3
+Enum.find([1, 2, 3], fn x -> x > 2 end)  # 3
+
+# find_index/2
+Enum.find_index([1, 2, 3], fn x -> x == 2 end)  # 1
+
+# find_value/2, find_value/3
+Enum.find_value([1, 2, 3], fn x -> x == 2 end)  # 2
+
+# flat_map/2
+Enum.flat_map([1, 2, 3], fn x -> [x, x * 2] end)  # [1, 2, 2, 4, 3, 6]
+
+# flatten/1
+Enum.flatten([1, [2, [3, 4], 5], 6])  # [1, 2, 3, 4, 5, 6]
+
+# group_by/2, group_by/3
+Enum.group_by([1, 2, 3, 4], fn x -> rem(x, 2) end)  # %{0 => [2, 4], 1 => [1, 3]}
+
+# in?/2
+Enum.in?([1, 2, 3], 2)  # true
+
+# into/2, into/3
+Enum.into([1, 2, 3], [])  # [1, 2, 3]
+
+# join/1, join/2
+Enum.join([1, 2, 3], ", ")  # "1, 2, 3"
+
+# map/2
+Enum.map([1, 2, 3], fn x -> x * 2 end)  # [2, 4, 6]
+
+# max/1, max/2
+Enum.max([1, 2, 3])  # 3
+
+# max_by/2, max_by/3
+Enum.max_by([1, 2, 3], fn x -> -x end)  # 1
+
+# member?/2
+Enum.member?([1, 2, 3], 2)  # true
+
+# min/1, min/2
+Enum.min([1, 2, 3])  # 1
+
+# min_by/2, min_by/3
+Enum.min_by([1, 2, 3], fn x -> -x end)  # 3
+
+# partition/2
+Enum.partition([1, 2, 3], fn x -> x > 1 end)  # {[2, 3], [1]}
+
+# random/1
+Enum.random([1, 2, 3])  # 1 or 2 or 3
+
+# reduce/2, reduce/3
+Enum.reduce([1, 2, 3], 0, fn x, acc -> x + acc end)  # 6
+
+# reduce_while/3
+Enum.reduce_while([1, 2, 3], 0, fn x, acc -> if x < 3, do: {:cont, acc + x}, else: {:halt, acc} end)  # 3
+
+# reject/2
+Enum.reject([1, 2, 3], fn x -> x > 1 end)  # [1]
+
+# reverse/1, reverse/2
+Enum.reverse([1, 2, 3])  # [3, 2, 1]
+
+# scan/2, scan/3
+Enum.scan([1, 2, 3], 0, fn x, acc -> x + acc end)  # [1, 3, 6]
+
+ shuffle/1
+Enum.shuffle([1, 2, 3])  # [2, 3, 1]
+
+# slice/2, slice/3
+Enum.slice([1, 2, 3, 4, 5], 1..3)  # [2, 3, 4]
+Enum.slice([1, 2, 3, 4, 5], 1, 3)  # [2, 3, 4]
+
+# sort/1, sort/2
+Enum.sort([3, 1, 2])  # [1, 2, 3]
+Enum.sort([3, 1, 2], fn x, y -> x > y end)  # [3, 2, 1]
+
+# split/2
+Enum.split([1, 2, 3, 4, 5], 3)  # {[1, 2, 3], [4, 5]}
+
+# split_while/2
+Enum.split_while([1, 2, 3, 4, 5], fn x -> x < 3 end)  # {[1, 2], [3, 4, 5]}
+
+# take/2
+Enum.take([1, 2, 3], 2)  # [1, 2]
+
+# take_every/2
+Enum.take_every([1, 2, 3, 4, 5], 2)  # [1, 3, 5]
+
+# take_while/2
+Enum.take_while([1, 2, 3, 4, 5], fn x -> x < 3 end)  # [1, 2]
+
+# uniq/1, uniq/2
+Enum.uniq([1, 2, 2, 3])  # [1, 2, 3]
+Enum.uniq([1, 2, 2, 3], fn x -> rem(x, 2) end)  # [1, 2]
+
+#### Agent
+
+# Agent (simple state-holding processes)
+{:ok, agent} = Agent.start_link(fn -> %{} end)
+Agent.update(agent, &Map.put(&1, :key, "value"))
+Agent.get(agent, &(&1))
+
+#### Task
+
+# Task (asynchronous computations)
+task = Task.async(fn -> 1 + 2 end)
+Task.await(task)  # {:ok, 3}
+
+#### Imports, Aliases, and Requires
+
+# Importing functions from a module
+import Enum, only: [map: 2, reduce: 3]
+
+# Aliasing a module
+alias MyApp.SomeModule
+
+# Requiring a module (for macros)
+require Logger
+
+# Using another module's functionality
+use ExUnit.Case
+
+
