@@ -509,4 +509,36 @@ require Logger
 # Using another module's functionality
 use ExUnit.Case
 
+# Create a new empty queue
+queue = :queue.new()
+
+# Add elements to the queue
+queue = :queue.in(1, queue)
+queue = :queue.in(2, queue)
+
+# Get and remove the first element
+{{:value, first_element}, queue} = :queue.out(queue)
+
+# Check the first element without removing it
+{:value, first_element} = :queue.peek(queue)
+
+# Check if the queue is empty
+is_empty = :queue.is_empty(queue)
+
+IO.inspect({first_element, is_empty})
+
+# Create a new empty tree
+tree = :gb_trees.empty()
+
+# Insert elements with priorities
+tree = :gb_trees.enter(2, "low priority", tree)
+tree = :gb_trees.enter(1, "high priority", tree)
+
+# Find and remove the element with the highest priority
+{{priority, element}, tree} = :gb_trees.take_smallest(tree)
+
+IO.inspect({priority, element})
+
+
+
 
